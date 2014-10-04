@@ -1,6 +1,10 @@
 Empirical-CheckStyle
 ====================
 
+Link to trello board:
+https://trello.com/b/QlvMd8iU/empirical-checkstyle
+
+
 ### Some issues and ideas:
 
 * How will you define "famous". By activity, stars?
