@@ -5,8 +5,7 @@ Reference: I got motivation for this script from https://gist.github.com/gregory
 import os
 import re
 import sys
-total = 0.0
-count = 0
+import basic_style_check_on_project
 
 def main():  
     if(len(sys.argv) < 2):
