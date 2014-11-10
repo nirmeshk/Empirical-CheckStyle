@@ -17,16 +17,22 @@ def main():
         exit()
     elif ((os.path.isfile and target[-3:] == ".py") or 
           (os.path.isdir(target) and '__init__.py' in os.listdir(target)) ): 
-        check(target)
+
+        if target[-1] == '/' : module_name = target.split('/')[-2]
+        else: module_name = target.split('/')[-1]
+        
+        check(target, module_name = module_name, write_to_db = True)
     else:
         print("Provided input is neither python file nor a python package."
               " Please Provide a valid python file path or python package path")
         exit()    
 
-def check(module_name, module_path, write_to_db = False, commit_hash='-'):
-    print("CHECKING ", module)
+def check(module_path, module_name='unknown', write_to_db = False, commit_hash='-'):
+    """A function that runs pylint in on the package specified and parses the required fields from the output"""
     messages = {}
-    pout = os.popen('pylint -r y %s'% module, 'r')
+    pout = os.popen('pylint -r y %s'% module_path, 'r')
+    number_of_statements = 0
+    score = 0.00
     for line in pout:
         if  "statements analysed" in line:
             number_of_statements = int(line.split(' ')[0])
@@ -56,18 +62,17 @@ def write_db(project,
             number_of_statements, 
             score, 
             commit_hash):
+    """A function to write the analysis results into the DB"""
     db = MySQLdb.connect("localhost","root","root","checkstyle" )
-    cursor = db.cursor()
-    query1 = "INSERT INTO code_analysis (repository, commit_hash, message, message_count) VALUES(%s, %s, %s, %d)"
-    query2 = "INSERT INTO code_score (project, commit_hash, statement_count, score) VALUES(%s,%s, %d, %f)"
-
-    for key in messages_dict:
-        cursor.execute( query1, (project, commit_hash, key, messages_dict[key]) )
+    cursor = db.cursor() 
+    #print(messages_dict)
+    for key, value in messages_dict.items():
+        query = "INSERT INTO code_analysis (project, commit_hash, message, message_count) VALUES('%s', '%s', '%s', %s)" % (project, commit_hash, key, value)
+        cursor.execute( query )
         db.commit()
-
-    cursor.execute( query2, (project, commit_hash, number_of_statements, score) )
+    query = "INSERT INTO code_score (project, commit_hash, statement_count, score) VALUES('%s', '%s', %s, %s)" % (project, commit_hash, number_of_statements, score)
+    cursor.execute( query )
     db.commit()
-
     db.close()
 
 if __name__ == "__main__":
