@@ -30,45 +30,43 @@ def walk_repo(module_name, path_to_repo, steps=100):
 
     #optionally provide number of commits that need to be skipped between each analysis.
     #The reason being too many commits takes large time to evaluate.
-    cmd = ["git", "log", "--pretty=format:'%h'"]
-    print(cmd)
-    p = subprocess.Popen(cmd, cwd=path_to_repo,  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cmd = "git log --pretty=format:'%h'"
+    #print(cmd)
+    p = subprocess.Popen(cmd, cwd=path_to_repo, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
     stdoutdata, stderrdata = p.communicate()
 
-    commit_hash = []
     #Create a list of all commit messages
-
-    out = stdoutdata.decode('utf-8').replace("'","")
-
-    for commit in out.split('\n'):
-        commit_hash.append(commit)
+    commit_hash = [commit for commit in stdoutdata.splitlines()]
     print(commit_hash)
 
     #RESET head to master branch origional
-    cmd = ['git', 'checkout', 'master']
-    p = subprocess.Popen(cmd, cwd=path_to_repo,  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cmd = "git checkout master"
+    p = subprocess.Popen(cmd, cwd=path_to_repo, shell=True,  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdoutdata, stderrdata = p.communicate()
 
     number_of_commits = len(commit_hash)
 
-    for c_i in range(0, number_of_commits, steps):
-        #Check out on particular commit
-        cmd = ['git', 'checkout', commit_hash[c_i]]
-        print(cmd)
-        p = subprocess.Popen(cmd, cwd=path_to_repo,  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdoutdata, stderrdata = p.communicate()
-        print("Output:")
-        print(stdoutdata)
-        print("Error:")
-        print(stderrdata)
-        print('#'*50)
-        time.sleep(5)
-        #Call the function to analyse the code scores for this particular commit
-        style_check_project.check(path_to_repo, module_name = module_name, write_to_db = True, commit_hash = commit_hash[c_i])
+    try:
+        for c_i in range(0, number_of_commits, steps):
+            #Check out on particular commit
+            cmd = 'git checkout ' + commit_hash[c_i]
+            print(cmd)
+            p = subprocess.Popen(cmd, cwd=path_to_repo, shell=True,  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdoutdata, stderrdata = p.communicate()
+            print("Output:")
+            print(stdoutdata)
+            print("Error:")
+            print(stderrdata)
+            print('#'*50)
+            time.sleep(5)
+            #Call the function to analyse the code scores for this particular commit
+            style_check_project.check(path_to_repo, module_name = module_name, write_to_db = True, commit_hash = commit_hash[c_i])
+    except FileNotFoundError:
+        pass
 
     print("Finished processing..Reset the head to origional position..")
-    cmd = ['git', 'checkout', 'master']
-    p = subprocess.Popen(cmd, cwd=path_to_repo,  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    cmd = 'git checkout master'
+    p = subprocess.Popen(cmd, cwd=path_to_repo, shell=True,  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdoutdata, stderrdata = p.communicate()
 
 if __name__ == "__main__":
