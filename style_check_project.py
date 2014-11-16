@@ -27,7 +27,11 @@ def main():
               " Please Provide a valid python file path or python package path")
         exit()    
 
-def check(module_path, module_name='unknown', write_to_db = False, commit_hash='-'):
+def check(module_path, 
+    module_name='unknown', 
+    write_to_db = False, 
+    commit_hash='-',
+    commit_number = -1):
     """A function that runs pylint in on the package specified and parses the required fields from the output"""
     messages = {}
     pout = os.popen('pylint -r y %s'% module_path, 'r')
@@ -54,23 +58,24 @@ def check(module_path, module_name='unknown', write_to_db = False, commit_hash='
     print("score: " + str(score) )
 
     if write_to_db:
-        write_db(module_name, messages, number_of_statements, score, commit_hash)
+        write_db(module_name, messages, number_of_statements, score, commit_hash, commit_number)
 
 
 def write_db(project, 
             messages_dict, 
             number_of_statements, 
             score, 
-            commit_hash):
+            commit_hash,
+            commit_number):
     """A function to write the analysis results into the DB"""
     db = MySQLdb.connect("localhost","root","root","checkstyle" )
     cursor = db.cursor() 
     #print(messages_dict)
     for key, value in messages_dict.items():
-        query = "INSERT INTO code_analysis (project, commit_hash, message, message_count) VALUES('%s', '%s', '%s', %s)" % (project, commit_hash, key, value)
+        query = "INSERT INTO code_analysis (project, commit_hash, commit_number, message, message_count) VALUES('%s', '%s', %s ,'%s', %s)" % (project, commit_hash, commit_number, key, value)
         cursor.execute( query )
         db.commit()
-    query = "INSERT INTO code_score (project, commit_hash, statement_count, score) VALUES('%s', '%s', %s, %s)" % (project, commit_hash, number_of_statements, score)
+    query = "INSERT INTO code_score (project, commit_hash, commit_number, statement_count, score) VALUES('%s', '%s', %s, %s, %s)" % (project, commit_hash, commit_number, number_of_statements, score)
     cursor.execute( query )
     db.commit()
     db.close()
