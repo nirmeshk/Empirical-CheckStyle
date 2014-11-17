@@ -46,17 +46,18 @@ data1 = dbGetQuery(con, 'select message, commit_number, message_count from code_
                  ("invalid-name","missing-docstring","unused-import","superfluous-parens",
                  "unused-wildcard-import","line-too-long") order by commit_number' )
 
-p1 <- ggplot(abc, aes(x=commit_number, y=message_count))
-p1 + geom_line() + facet_grid( message~.)
+p1 <- ggplot(abc, aes(x=commit_number, y=message_count)) + geom_line() + facet_grid( message~.)
 
 data2 = dbGetQuery(con, 'select message, commit_number, message_count from code_analysis 
                  where project="fabric" and message in 
-                 ("syntax-error","reimported","unnecessary-pass","multiple-statements",
+                 ("syntax-error","unnecessary-pass","multiple-statements",
                   "no-init","no-member","catching-non-exception",
-                  "no-name-in-module","duplicate-key","undefined-loop-variable") order by commit_number' )
+                   "duplicate-key","undefined-loop-variable") order by commit_number' )
 
-p2 <- ggplot(data2, aes(x=commit_number, y=message_count))
-p2 + geom_line() + facet_grid( message~.)
+p2 <- ggplot(data2, aes(x=commit_number, y=message_count)) + geom_line() + facet_grid( message~.)
+
+
+multiplot(p1,p2,cols=2)
 
 
 
