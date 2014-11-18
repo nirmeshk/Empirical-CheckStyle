@@ -63,3 +63,6 @@ At each checkpoint, there are large number of error messages. Currently I am sho
     * no-member
     * duplicate-key
     * undefined-loop-variable
+
+####Conclusion
+Need to get some feedback from professor.
