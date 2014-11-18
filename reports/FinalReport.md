@@ -8,6 +8,11 @@ For each programming language, there are some coding conventions and style guide
 In this section, I provide some overall analysis. Pylint provides a detailed analysis of errors such as checking line-code's length,
 checking if variable names are well-formed according to PEP 8 coding standard, checking if imported modules are used, etc.
 
+Below is the plot of basic code score Normalized by Number of lines of code over the life cycle. It can be observed from the plot, that there is very little change in the overall code score throughout the life cycle. Even as the number of lines of code increase, the error messages and warnings also increase along with that.
 
-![blah](message_throughout_lifecyle.png)
+![Code Score](code_score.png)
+
+This motivates us to analyze the code on more fine grain level. By checking the error messages at each checkpoint, it was discovered that the nature of errors and warning is diverse. It can be easily deduced from the plot below that there are broadly 2 different types of error messages- there are some that persist throughout the life-cycle of the project and others which appear at some point, and then are fixed.
+
+![Number Of Messages](message_throughout_lifecyle.png)
 
