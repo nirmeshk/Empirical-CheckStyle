@@ -1,6 +1,0 @@
-django,/home/nirmesh/projects/check_style/django/django/
-django-cms,/home/nirmesh/projects/check_style/django-cms/cms/
-edx-platform,/home/nirmesh/projects/check_style/edx-platform/cms/
-fabric,/home/nirmesh/projects/check_style/fabric/fabric/
-ipython,/home/nirmesh/projects/check_style/ipython/IPython/
-matplotlib,/home/nirmesh/projects/check_style/matplotlib/lib/matplotlib/
