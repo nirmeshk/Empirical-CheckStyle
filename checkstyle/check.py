@@ -1,31 +1,7 @@
-"""
-One needs to provide the python file or package as input. If you are providing a directory, it must contain __init__.py file.
-Reference: I got motivation for this script from https://gist.github.com/gregorynicholas/3152237. I have used some part of the mentioned code.
-"""
 import os
 import re
 import sys
 import MySQLdb
-
-def main():
-    if(len(sys.argv) < 2):
-        print("Please provide python file or package path as command line argument")
-        exit()
-    target = sys.argv[1]
-    if not os.path.exists(target):
-        print("File or directory does not exists")
-        exit()
-    elif ((os.path.isfile and target[-3:] == ".py") or 
-          (os.path.isdir(target) and '__init__.py' in os.listdir(target)) ): 
-
-        if target[-1] == '/' : module_name = target.split('/')[-2]
-        else: module_name = target.split('/')[-1]
-        
-        check(target, module_name = module_name, write_to_db = True)
-    else:
-        print("Provided input is neither python file nor a python package."
-              " Please Provide a valid python file path or python package path")
-        exit()    
 
 def check(module_path, 
     module_name='unknown', 
@@ -79,7 +55,3 @@ def write_db(project,
     cursor.execute( query )
     db.commit()
     db.close()
-
-if __name__ == "__main__":
-    main()
-
