@@ -45,7 +45,7 @@ Below are the two plot - 1. Lines of code at each checkpoint & 2. Overall code s
 
 This motivates us to analyze the code on more fine grain level. By checking the error messages at each checkpoint, it was discovered that the nature of errors and warning is diverse. It can be easily deduced from the plot below that there are broadly 2 different types of error messages- there are some that persist throughout the life-cycle of the project and others which appear at some point, and then are fixed.
 
-At each checkpoint, there are large number of error messages. Currently I am showing only top-6 and bottom-6 messages in the below plot for 'fabric' repository. **Similar patterns are observed across all the other repositories also. **
+At each checkpoint, there are large number of error messages. Currently I am showing only top-6 and bottom-6 messages in the below plot for 'fabric' repository. **Similar patterns are observed across all the other repositories also**.
 
 ![Number Of Messages](message_throughout_lifecyle.png)
 *Figure 2. Left plot shows top-6 messages for 'fabric' project which persists throughout the life cycle of project. Right plot shows bottom-6 error messages for same project. It can be clearly seen that these messages appear and disappear at different instances.*
@@ -55,6 +55,12 @@ At each checkpoint, there are large number of error messages. Currently I am sho
 This part is extension to the original project. The above analysis gives us motivation to prioritize these warning messages based on there behavior. Since the Pylint and other such tools throw large number of warnings (roughly 50-60 warnings at each commit), it becomes necessary to prioritize them.[1] The idea here is that the warnings that persists throughout the life cycle are probably less important since nobody cares to fix them. Those warnings that appear only at few checkpoints, are high priority since they were fixed by someone. 
 
 Similar work has been done by Sunghun Kim and Michael D. Ernst[1]. But their approach was to compare the code line by line for each consecutive commits. That is computationally very expensive, specially for large projects which have more than 5K commits. The current approach in this project is computationally much more efficient since we are only analyzing the project for 100 chosen checkpoint commits.
+
+######Experimentation
+We first calculate the maximum streak of each warning across the 0 to 100 checkpoint. This is just number of consecutive checkpoints the error message occurs. For e.g, A warning message 'x' appears consecutively for 10 checkpoints, and then disappears, and then reappears for 3 consecutive commits. In this case, we take maximum(10,3) to be maximum streak of error message.
+
+Now in this approach, we might not be able to capture any drastic change in the number of warnings for particular message. For e.g, some warning message 'x' is having total message count 300 at some checkpoint c. Now  if at c+1, this number plunges to 10, the above approach will not take this into consideration. So to avoid this, I consider a streak to be continuous only if the count of messages at checkpoint c+1 is not less than half of number of messages at checkpoint c, otherwise, I terminate the streak.
+
 
 * Messages with highest frequency:
     * invalid-name
@@ -72,8 +78,8 @@ Similar work has been done by Sunghun Kim and Michael D. Ernst[1]. But their app
     * undefined-loop-variable
 
 ####Conclusion
-Need to get some feedback from professor.
 
+It can be concluded from above observations and experiments, that some interesting patterns exist in the coding styles of open source projects. It is possible to categorize the warnings given by checkstyle tools. There are some messages that persists throughout the life cycle of project, while others appear only at few instance. Based on this, it is even possible to prioritize these warning messages. The priorities assigned to error messages may help organizations to filter large number of warning messages given by checkstyle tools.
 
 ####References
 
