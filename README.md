@@ -20,7 +20,7 @@ Install Mysql:
 
 Install python-3: 
 
-`sudo apt-get install python3 python3-dev`
+`sudo apt-get install python3 python3-dev python3-pip`
 
 Install development headers: 
 
@@ -33,6 +33,13 @@ Install pylint:
 Install mysql connector for python: 
 
 `sudo pip3 install git+git://github.com/davispuh/MySQL-for-Python-3`
+
+#### Installing dependencies for plotting
+
+```
+sudo apt-get install python3-pandas 
+pip3 install ggplot  matplotlib --user
+```
 
 
 #### Database setup:
