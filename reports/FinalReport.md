@@ -1,4 +1,5 @@
 #Analyzing the changes in the coding standards throughout the life cycle of the project.
+Nirmesh Khandelwal
 
 ####Introduction
 For each programming language, there are some coding conventions and style guides that are defined, which helps to structure your code and provide better readability. Examples of some of the famous coding standards are [PEP 8](https://www.python.org/dev/peps/pep-0008) for Python and [Oracle's Guide](http://www.oracle.com/technetwork/java/codeconvtoc-136057.html) for Java. Following the coding conventions ensures better code quality and readability. Also, it helps to maintain a consistency in coding pattern throughout the organization. 
@@ -68,6 +69,7 @@ Below are the results of this analysis:
 |bad-super-call |2  |
 |signature-differs  |2  |
 |access-member-before-definition    |2  |
+*Table 1. The above table shows 10 highest priority warning messages along with their support count. Support count of a message is number of projects it occurs as the high priority message.*
 
 
 **Messages with lowest priority**:
@@ -84,6 +86,9 @@ Below are the results of this analysis:
 |unused-argument    |4  |
 |bad-whitespace |3  |
 |broad-except   |3  |
+*Table 2. The above table shows 10 lowest priority warning messages along with their support count. Support count of a message is number of projects it occurs as the low priority message.*
+
+It can be clearly seen from the above analysis, that it it possible to prioritize the warning messages with this simple and efficient method. In order to be more sure about the results, we need to further analyze large number of repositories.
 
 ####Conclusion
 
