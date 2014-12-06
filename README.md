@@ -34,10 +34,8 @@ Install mysql connector for python:
 
 #### Installing dependencies for plotting
 
-```
-sudo apt-get install python3-pandas 
-pip3 install ggplot  matplotlib --user
-```
+`sudo apt-get install python3-pandas`
+`pip3 install ggplot  matplotlib --user`
 
 
 #### Database setup:
