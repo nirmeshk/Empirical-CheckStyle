@@ -50,25 +50,40 @@ The above plot was just to check the feasibility of the analysis. In order to ge
 
 So I moved further by calculating the maximum streak of each warning message in the projects. Maximum streak of warning message is the number of consecutive checkpoints the error message occurs continuously. For e.g, A warning message 'x' appears consecutively for 10 checkpoints, and then disappears, and then reappears for 3 consecutive commits. In this case, we take the maximum of (10,3) to be highest streak of error message 'x' for that particular project.
 
-Soon I realized that with this approach, we might not be able to capture any drastic change in the number of warnings for particular message. For e.g, some warning message 'x' is having total message count 300 at some checkpoint c. Now  if at c+1, this number plunges to 10, the above approach will not take this into consideration. Such changes are important because if people are trying to fix any warning message, then such message should be high priority.
+For each project, we find 20 highest priority warnings and 20 lowest priority warnings. In order to combine the results from all the projects, we take **support count of each message**. For e.g if warning message 'line-too-long' is identified among top 20 High priority warnings across 6 projects, its support is 6 for High Priority classification` .
 
-So to avoid this, I consider a streak to be continuous only if the count of messages at checkpoint c+1 is not less than half of count of message at its previous checkpoint c, otherwise, I terminate the streak.
+Below are the results of this analysis:
 
-* Messages with Highest priority:
-    * syntax-error
-    * unnecessary-pass
-    * no-init
-    * no-member
-    * duplicate-key
-    * undefined-loop-variable
+**Messages with Highest priority**:
 
-* Messages with lowest priority:
-    * invalid-name
-    * missing-docstring
-    * unused-import
-    * superfluous-parens
-    * unused-wildcard-import
-    * line-too-long
+|Warning Message    |Support Count |
+|-------------------|--------------|
+|syntax-error   |7  |
+|bad-indentation    |5  |
+|mixed-indentation  |5  |
+|undefined-variable |3  |
+|bad-classmethod-argument   |3  |
+|catching-non-exception |2  |
+|undefined-all-variable |2  |
+|bad-super-call |2  |
+|signature-differs  |2  |
+|access-member-before-definition    |2  |
+
+
+**Messages with lowest priority**:
+
+|Warning Message    |Support Count |
+|-------------------|--------------|
+|unused-variable    |10  |
+|line-too-long  |10  |
+|unused-import  |10  |
+|missing-docstring  |10  |
+|too-many-arguments |9  |
+|invalid-name   |6  |
+|wildcard-import    |4  |
+|unused-argument    |4  |
+|bad-whitespace |3  |
+|broad-except   |3  |
 
 ####Conclusion
 

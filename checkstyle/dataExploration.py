@@ -7,9 +7,9 @@ from ggplot import *
 from collections import defaultdict
 
 def main():
-    plot_figure_1()
-    plot_figure_2()
-    plot_figure_3()
+    #plot_figure_1()
+    #plot_figure_2()
+    #plot_figure_3()
     find_priority_warnings()
 
 def plot_figure_1():
@@ -81,33 +81,24 @@ def find_priority_warnings():
 
         for message in message_list:
             streaks = []
-
             query = "SELECT commit_number, message, message_count FROM code_analysis where project = '%s' and message = '%s'"%(project, message)
-
             cur.execute( query )
-
             commit_to_count = defaultdict(int) 
-
             rows = cur.fetchall()
             for row in rows: 
                 commit_to_count[ row[0] ] = row[2]
-
             count = 0
-
             for commit in commit_list:
                 if (commit_to_count[commit] > 0): #and commit_to_count[commit] > commit_to_count[previous_commit]/2):
                     count += 1
                 else:
                     if count > 0: 
                         streaks.append(count) 
-                        count = 0
-                    #reset the counter
-                    
+                        count = 0             
             streaks.append(count)
             final_list.append( (message, max(streaks)) )
 
         final_list.sort(key = lambda x: x[1])
-        
         for x,y in final_list[0:20]:
             high_priority[x] += 1
         for x,y in final_list[-20:]:
@@ -118,12 +109,12 @@ def find_priority_warnings():
     print("-"*100)
     print("20 Highest priority warnings")
     print("-"*100)
-    print( [x for x,y in high_priority] )
+    for x,y in high_priority: print('|' + x + '\t|' + str(y) + '\t|')
     print("-"*100)
     print("20 lowest priority warnings")
     print("-"*100)
     low_priority = sorted(low_priority.items(), key=operator.itemgetter(1), reverse=True)
-    print( [x for x,y in low_priority] )  
+    for x,y in low_priority: print('|' + x + '\t|' + str(y) + '\t|')
 
 if __name__ == '__main__':
     main()
