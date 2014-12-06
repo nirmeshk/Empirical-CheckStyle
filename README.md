@@ -14,17 +14,15 @@ Link to FinalReport.md
 
 For ubuntu:
 
-Install Mysql: 
-
-`sudo apt-get install mysql-server`
-
-Install python-3: 
+Install python-3 and pip installer: 
 
 `sudo apt-get install python3 python3-dev python3-pip`
 
-Install development headers: 
 
-`sudo apt-get install build-essential libmysqlclient-dev`
+Install Mysql and required development headers: 
+
+`sudo apt-get install mysql-server build-essential libmysqlclient-dev`
+
 
 Install pylint:
 
