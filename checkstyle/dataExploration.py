@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from ggplot import *
 
 def main():
-    plot_figure_2()
+    plot_figure_3()
 
 def plot_figure_1():
     con = MySQLdb.connect("localhost", "root", "root", "checkstyle" )
@@ -38,6 +38,18 @@ def plot_figure_2():
 
     print(ggplot(df_2, aes(x='commit_number', y='message_count')) + geom_point() + facet_grid( 'message' ))
     con.close()
+
+def plot_figure_3():
+    con = MySQLdb.connect("localhost", "root", "root", "checkstyle" )
+    df_1 = pd.read_sql('select message, sum(message_count) as total_count from code_analysis group by message order by total_count',con)
+    p1 = ggplot(df_1, aes(x='message', y='total_count')) + geom_bar( stat="identity" )
+    print(p1)
+
+
+
+def find_priority_warnings():
+    pass
+
 
 if __name__ == '__main__':
     main()

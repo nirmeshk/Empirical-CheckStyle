@@ -57,25 +57,34 @@ This part is extension to the original project. The above analysis gives us moti
 Similar work has been done by Sunghun Kim and Michael D. Ernst[1]. But their approach was to compare the code line by line for each consecutive commits. That is computationally very expensive, specially for large projects which have more than 5K commits. The current approach in this project is computationally much more efficient since we are only analyzing the project for 100 chosen checkpoint commits.
 
 ######Experimentation
-We first calculate the maximum streak of each warning across the 0 to 100 checkpoint. This is just number of consecutive checkpoints the error message occurs. For e.g, A warning message 'x' appears consecutively for 10 checkpoints, and then disappears, and then reappears for 3 consecutive commits. In this case, we take maximum(10,3) to be maximum streak of error message.
 
-Now in this approach, we might not be able to capture any drastic change in the number of warnings for particular message. For e.g, some warning message 'x' is having total message count 300 at some checkpoint c. Now  if at c+1, this number plunges to 10, the above approach will not take this into consideration. So to avoid this, I consider a streak to be continuous only if the count of messages at checkpoint c+1 is not less than half of number of messages at checkpoint c, otherwise, I terminate the streak.
+In order to check the feasibility of deciding priorities, I plotted the count of each warning messages across all the projects.
+![Total warning message across all repos](figure_3.png)
+*Figure 3. The above plot shows the count of warning messages summed for each repo. It can be clearly seen that there are sum warnings that have huge count. These warnings might be the one with less priority, since people are ignoring them. Sunghun Kim and Michael D. Ernst[1], also generated similar results in their work for Prioritizing Warning Categories*.
 
+The above plot was just to check the feasibility of the analysis. In order to get accurate results, we need more concrete method.
 
-* Messages with highest frequency:
-    * invalid-name
-    * missing-docstring
-    * unused-import
-    * superfluous-parens
-    * unused-wildcard-import
-    * line-too-long
-* Messages with lowest frequency:
+So I moved further by calculating the maximum streak of each warning message in the projects. Maximum streak of warning message is the number of consecutive checkpoints the error message occurs continuously. For e.g, A warning message 'x' appears consecutively for 10 checkpoints, and then disappears, and then reappears for 3 consecutive commits. In this case, we take the maximum of (10,3) to be highest streak of error message 'x' for that particular project.
+
+Soon I realized that with this approach, we might not be able to capture any drastic change in the number of warnings for particular message. For e.g, some warning message 'x' is having total message count 300 at some checkpoint c. Now  if at c+1, this number plunges to 10, the above approach will not take this into consideration. Such changes are important because if people are trying to fix any warning message, then such message should be high priority.
+
+So to avoid this, I consider a streak to be continuous only if the count of messages at checkpoint c+1 is not less than half of count of message at its previous checkpoint c, otherwise, I terminate the streak.
+
+* Messages with Highest priority:
     * syntax-error
     * unnecessary-pass
     * no-init
     * no-member
     * duplicate-key
     * undefined-loop-variable
+
+* Messages with lowest priority:
+    * invalid-name
+    * missing-docstring
+    * unused-import
+    * superfluous-parens
+    * unused-wildcard-import
+    * line-too-long
 
 ####Conclusion
 
@@ -84,3 +93,5 @@ It can be concluded from above observations and experiments, that some interesti
 ####References
 
 1. [Prioritizing Warning Categories by Analyzing Software History](https://github.ncsu.edu/CSC510-Fall2014/Empirical-CheckStyle/blob/master/papers/Warnings.pdf?raw=true)
+
+2. [Pylint for python code analysis ]
