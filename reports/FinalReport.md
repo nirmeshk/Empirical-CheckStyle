@@ -7,36 +7,20 @@ In open source projects, it is difficult to maintain these standards as there ar
 
 For most of the languages, there are tools available that scan the code and gives different warnings related to coding styles. The project attempts to identify the type of warnings that occur during different stages of the project. Also, some of the warnings may be less important then others. Apart from observing the nature of these warnings, this analysis tries to provide an efficient way prioritize them.
 
-####Data Collection
-In order to collect the sufficient data for my analysis, I have selected below mentioned repositories from github.
-The selection is based on 'trending this month' and 'Most forked repositories', for Python language. One can easily search on github based on these 2 criteria.
-
-Selected repositories:
-
-- [Pandas](https://github.com/pydata/pandas.git)
-- [Reddit](https://github.com/reddit/reddit.git)
-- [Fabric](https://github.com/fabric/fabric.git)
-- [Django](https://github.com/django/django.git)
-- [Neurokernals](https://github.com/neurokernel/neurokernel.git)
-- [Youtube-dl](https://github.com/rg3/youtube-dl.git)
-- [Pydub](https://github.com/jiaaro/pydub.git)
-- [Tornado](https://github.com/tornadoweb/tornado.git)
-- [Scrapy](https://github.com/scrapy/scrapy.git)
-- [Ipytho](https://github.com/ipython/ipython.git)
-- [Matplotlib](https://github.com/matplotlib/matplotlib.git)
-- [Python Koans](https://github.com/gregmalcolm/python_koans.git)
-
-After downloading these repositories, we further collect data by running Pylint on code base. The details of this are described in the coming section.
-
 ####Introduction to Pylint
 There are several parsers available for different languages that analyze the code for bad coding styles and gives you detailed report. I have used [Pylint](http://www.pylint.org/). Pylint is python based tool that helps in finding these warnings for python language. When you parse a python package using Pylint, it gives you error and warning messages along with their count and position of particular warning message in the code. Some of the uses of Pylint are checking line-code's length, checking if variable names are well-formed according to PEP 8 coding standard, checking if imported modules are used, etc. 
 
 It also provides you a **Normalized score for the code out of 10.0**.
 
-####Analysis of the repositories
-In this section, I provide analysis results after running Pylint on projects. 
+####Data Collection
+In order to collect the sufficient data for my analysis, I have selected below mentioned repositories from github.
+The selection is based on 'trending this month' and 'Most forked repositories', for Python language. One can easily search on github based on these 2 criteria. For the list of selected repositories, check reference [3]. After downloading these repositories, we further collect data by running Pylint on code base. 
 
-For each repo, 100 commits are selected as checkpoints. For e.g if you have 5000 commits in the project, you place a checkpoint after each 50 commit. Then Pylint is run on code at each checkpoint. In order to persist the warning dat, we parse the messages given by Pylint and store them in MySQL db.
+For each repo, 100 commits are selected as checkpoints. For e.g if you have 5000 commits in the project, you place a checkpoint after each 50 commit. Then Pylint is run on code at each checkpoint. This In order to persist the warning dat, we parse the messages given by Pylint and store them in MySQL db.
+
+
+####Analysis of the repositories
+In this section, I provide results of different analysis performed on the final data collected after running Pylint on projects. 
 
 Below are the two plot - 1. Lines of code at each checkpoint & 2. Overall code score Normalized by Number of lines of code over the life cycle. It can be observed from the plot, that there is very little change in the overall code score throughout the life cycle. Even as the number of lines of code increase, the error messages and warnings also increase along with that.
 
@@ -94,4 +78,19 @@ It can be concluded from above observations and experiments, that some interesti
 
 1. [Prioritizing Warning Categories by Analyzing Software History](https://github.ncsu.edu/CSC510-Fall2014/Empirical-CheckStyle/blob/master/papers/Warnings.pdf?raw=true)
 
-2. [Pylint for python code analysis ]
+2. [Pylint for python code analysis ](http://www.pylint.org/)
+
+3. List of python repositories on gitHub used for this analysis:
+    - [Pandas](https://github.com/pydata/pandas.git)
+    - [Reddit](https://github.com/reddit/reddit.git)
+    - [Fabric](https://github.com/fabric/fabric.git)
+    - [Django](https://github.com/django/django.git)
+    - [Neurokernals](https://github.com/neurokernel/neurokernel.git)
+    - [Youtube-dl](https://github.com/rg3/youtube-dl.git)
+    - [Pydub](https://github.com/jiaaro/pydub.git)
+    - [Tornado](https://github.com/tornadoweb/tornado.git)
+    - [Scrapy](https://github.com/scrapy/scrapy.git)
+    - [Ipytho](https://github.com/ipython/ipython.git)
+    - [Matplotlib](https://github.com/matplotlib/matplotlib.git)
+    - [Python Koans](https://github.com/gregmalcolm/python_koans.git)
+    
